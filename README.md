@@ -2,7 +2,7 @@
 
 Handling-Selection-From-Multiple-Activities----HAOLEONGWONG
 ------------------------------------------------------------
-For this part, the job is to prompt user input and save the input in the .txt file, so that it will be read in the co-curriculum calculator part
+For this part, the job is to prompt user input and save the input in the .txt file, so that it will be read in the co-curriculum calculator(another part)
 --------------------------------------------------------------------------------------------------------------------------------------------------
 ###How to run this part?
 
