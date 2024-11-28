@@ -20,5 +20,8 @@ For this part, the job is to prompt user input and save the input in the .txt fi
 
 -The program output is optional, to check whether the code is functional.
 
+NOTE:
+For this part, the user will need to key in the extra activity one by one. This means, that the student will need to run this program repeatedly if there exists another extra activity
+
 ------------------------------------------------------------------------------------------------------------------------------------------------
 GOOD LUCK GUYS
