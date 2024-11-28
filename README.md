@@ -18,7 +18,7 @@ For this part, the job is to prompt user input and save the input in the .txt fi
 
 -The method transferinfoToString is to convert user info to String so that it can be append into .txt file. (optional, since the userinput is already in string format)
 
--The program output is optional, just to check whether the code is functional or not.
+-The program output is optional, to check whether the code is functional.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------
 GOOD LUCK GUYS
