@@ -18,6 +18,8 @@ If you are trying to execute this part, you can follow the steps below:
 6) Create a new class and copy the CategorizeandDisplay.The purpose of this class is to display the result.
 7) Create a new class and copy the main, to combine all the methods in these classes and finally show all the results.
 
+Note:
+The result will be changed if the input of the student matric number is different.
 ---------------------------------------------------------------------------------------------------------------------------
 ##In all these classes, I have created an optional output to check whether my coding is functional.
 ###GAMBATEH###
