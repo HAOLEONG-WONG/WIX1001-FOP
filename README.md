@@ -7,7 +7,9 @@ For this part, the job is to prompt user input and save the input in the .txt fi
 ###How to run this part?
 
 1)Create and copy the txt.file.
+
 2)Create and copy the class called CheckingFilesintheCurrentDirectory and run it.TO ensure the .txt is using the same directory as the code.
+
 3)Create and copy the class called FileReadAndAppend and run it. It will append the user input to the ActivitiesLog.txt.
 
 -The method readFromFile is to read the .txt file
