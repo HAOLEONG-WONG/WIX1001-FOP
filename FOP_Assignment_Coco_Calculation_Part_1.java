@@ -1,4 +1,3 @@
-
 package fop_assignment_coco_calculation_part_1;
 
 import java.io.BufferedReader;
@@ -13,15 +12,17 @@ public class FOP_Assignment_Coco_Calculation_Part_1 {
         System.out.print("Enter Matric Number: ");
         String matric_number=sc.nextLine();
         
-        String fileClubSociety = "C:\\Users\\chazi\\Documents\\NetBeansProjects\\FOP_Assignment_Coco_Calculation_Part_1\\ClubSocieties.txt";
-        String fileStudentPositions = "C:\\Users\\chazi\\Documents\\NetBeansProjects\\FOP_Assignment_Coco_Calculation_Part_1\\StudentPositions.txt";
-        String fileActivityLog = "C:\\Users\\chazi\\Documents\\NetBeansProjects\\FOP_Assignment_Coco_Calculation_Part_1\\ActivitiesLog.txt";
+        // Define relative paths for the input files
+        String fileClubSociety = "./ClubSocieties.txt";
+        String fileStudentPositions = "./StudentPositions.txt";
+        String fileActivityLog = "./ActivitiesLog.txt";        
         
-        
+            
         
         String position_society="";
         String position_uniform_body="";
         String position_sports_club="";
+        int check=0;
         try (BufferedReader br = new BufferedReader(new FileReader(fileStudentPositions))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -34,7 +35,14 @@ public class FOP_Assignment_Coco_Calculation_Part_1 {
                     position_society = parts[1]; // First position (e.g., Active Member)
                     position_uniform_body = parts[2]; // Second position (e.g., President)
                     position_sports_club = parts[3]; // Third position (e.g., Vice Secretary)
+                    
                 }
+                else
+                    check=check-1;
+                
+                if (check==-2){
+                    System.out.println("Wrong matric number! Please run again the program!");
+                    return;}
 
             }
         } catch (IOException e) {
