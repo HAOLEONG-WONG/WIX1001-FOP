@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package assignment;
+package assignment.pkgnew;
 
 /**
  *
@@ -11,8 +11,9 @@ package assignment;
 import java.io.*;
 import java.util.Scanner;
 public class NewClass {
-
+   
     public static void main(String[] args) {
+
         // Step 1: Prepare to store subject data and target user
         String userSubjectCodes = ""; // To store the subject codes for the target user
         Scanner scanner = new Scanner(System.in);
@@ -45,17 +46,22 @@ public class NewClass {
             return; // Exit if file reading fails
         }
 
-        // Find the target user by scanning through UserData.txt
-        String[] users = userData.split("\n"); // Break into lines
-        for (int i = 0; i < users.length; i += 5) { // Each user entry spans 5 lines
-            if (users[i + 1].equalsIgnoreCase(targetUser)) { // Matriculation number match
-                userSubjectCodes = users[i + 3]; // Get the subject codes
+        // Split user data into individual users
+        String[] users = userData.split("\n\n"); // Assume users are separated by double newlines
+        boolean userFound = false;
+
+        for (String userBlock : users) {
+            String[] userLines = userBlock.split("\n");
+
+            // Validate user block format (must have at least 5 lines)
+            if (userLines.length >= 5 && userLines[1].trim().equalsIgnoreCase(targetUser)) {
+                userSubjectCodes = userLines[3].trim(); // Subject codes are on the 4th line
+                userFound = true;
                 break;
             }
         }
 
-        // Handle case where user is not found
-        if (userSubjectCodes.isEmpty()) {
+        if (!userFound) {
             System.out.println("User not found: " + targetUser);
             return;
         }
@@ -76,7 +82,7 @@ public class NewClass {
             }
         }
 
-        // Sort the subjects (basic method without advanced sorting techniques)
+        // Sort the subjects (basic sorting)
         String[] subjectsArray = enrolledSubjects.split("\n");
         for (int i = 0; i < subjectsArray.length - 1; i++) {
             for (int j = i + 1; j < subjectsArray.length; j++) {
@@ -98,3 +104,5 @@ public class NewClass {
         }
     }
 }
+
+ 
