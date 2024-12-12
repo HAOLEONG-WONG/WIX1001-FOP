@@ -7,9 +7,11 @@ package assignment.pkgnew;
 /**
  *
  * @author Lenovo02
- */import java.io.*;
+ */
+import java.io.*;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.Collections;
 
 public class NewClass2 {
 
@@ -71,22 +73,17 @@ public class NewClass2 {
                     String subjectEntry = code + ": " + subjectName;
 
                     // Insert subject into the list in sorted order by name
-                    boolean inserted = false;
-                    for (int i = 0; i < sortedSubjects.size(); i++) {
-                        String currentSubjectName = sortedSubjects.get(i).split(": ", 2)[1];
-                        if (subjectName.compareTo(currentSubjectName) < 0) {
-                            sortedSubjects.add(i, subjectEntry);
-                            inserted = true;
-                            break;
-                        }
-                    }
-                    if (!inserted) {
-                        sortedSubjects.add(subjectEntry); // Add to the end if no earlier spot found
-                    }
-                    break;
+                    sortedSubjects.add(subjectEntry);
                 }
             }
         }
+
+        // Sort the subjects alphabetically by name
+        Collections.sort(sortedSubjects, (a, b) -> {
+            String nameA = a.split(": ", 2)[1];
+            String nameB = b.split(": ", 2)[1];
+            return nameA.compareTo(nameB);
+        });
 
         // Step 4: Display the sorted subjects
         System.out.println("Enrolled Subjects for " + targetUser + ":");
@@ -99,13 +96,31 @@ public class NewClass2 {
     // Helper method to extract subject codes from a user block
     private static LinkedList<String> extractSubjectCodes(String userBlock) {
         LinkedList<String> codes = new LinkedList<>();
-        String[] lines = userBlock.split("\n");
-        if (lines.length >= 4) {
-            String codeLine = lines[3].trim(); // Subject codes are on the 4th line
-            for (String code : codeLine.split(",")) {
-                codes.add(code.trim());
+        Scanner scanner = new Scanner(userBlock);
+        scanner.useDelimiter("\n");
+
+        boolean foundSubjectCodes = false;
+        while (scanner.hasNext()) {
+            String line = scanner.nextLine().trim();
+            if (line.equals("")) {
+                continue; // Skip empty lines
+            }
+
+            if (foundSubjectCodes) {
+                for (String code : line.split(",")) {
+                    codes.add(code.trim());
+                }
+            } else if (line.startsWith(userBlock.split("\n")[0])) {
+                // Skip the first line (user info)
+            } else {
+                // Found the subject code line
+                foundSubjectCodes = true;
+                for (String code : line.split(",")) {
+                    codes.add(code.trim());
+                }
             }
         }
+
         return codes;
     }
 }
