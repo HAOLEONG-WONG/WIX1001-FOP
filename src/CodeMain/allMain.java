@@ -96,6 +96,7 @@ public class allMain {
             
             switch (choice) {
                 case 1:
+                    System.out.println("Student "+current_user.getMatricnum());
                     academicP.main(current_user.getMatricnum());
                     break;
                 case 2:
@@ -114,8 +115,7 @@ public class allMain {
                     page=false;
                     break;
                 default:
-                    System.out.print("Invalid option. Please enter again: ");
-                    choice=sc.nextInt();
+                    System.out.println("Invalid option. Please enter again.");
                     break;
             }
         }

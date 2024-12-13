@@ -9,97 +9,75 @@ package AcademicPage;
  * @author HAOLEONGWONG
  */
 import java.io.*;
+import java.io.*;
+import java.util.*;
 import java.util.Scanner;
 public class NewClass {
 
     public static void main(String a) {
         Scanner sc=new Scanner(System.in);
-        
-        // Step 1: Prepare to store subject data and target user
-        String userSubjectCodes = ""; // To store the subject codes for the target user
-
-        String targetUser = a;
-
-        // Step 2: Read AcademicSubjects.txt into a string (for mapping)
-        String subjectsData = "";
-        try (BufferedReader subjectReader = new BufferedReader(new FileReader("AcademicSubjects.txt"))) {
+         try {
+            // Read AcademicSubjects.txt and create a map of SubjectCode to SubjectName
+            Map<String, String> subjectMap = new HashMap<>();
+            BufferedReader subjectReader = new BufferedReader(new FileReader("AcademicSubjects.txt"));
             String line;
             while ((line = subjectReader.readLine()) != null) {
-                subjectsData += line.trim() + "\n"; // Append subject data to the string
+                String[] parts = line.split(",");
+                if (parts.length == 2) {
+                    subjectMap.put(parts[0].trim(), parts[1].trim());
+                }
             }
-        } catch (IOException e) {
-            System.out.println("Error reading AcademicSubjects.txt: " + e.getMessage());
-            return; // Exit if file reading fails
-        }
+            subjectReader.close();
 
-        // Step 3: Read UserData.txt and find the target user's subjects
-        String userData = ""; // To store all user data
-        try (BufferedReader userReader = new BufferedReader(new FileReader("UserData.txt"))) {
-            String line;
+            // Read UserData.txt to extract subjects for a specific student
+            BufferedReader userReader = new BufferedReader(new FileReader("UserData.txt"));
+            String studentId = a; // Change this to the desired student ID
+            List<String> enrolledSubjectCodes = new ArrayList<>();
+
             while ((line = userReader.readLine()) != null) {
-                userData += line.trim() + "\n"; // Append user data to the string
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading UserData.txt: " + e.getMessage());
-            return; // Exit if file reading fails
-        }
-
-        // Split user data into individual users
-        String[] users = userData.split("\n\n"); // Assume users are separated by double newlines
-        boolean userFound = false;
-
-        for (String userBlock : users) {
-            String[] userLines = userBlock.split("\n");
-
-            // Validate user block format (must have at least 5 lines)
-            if (userLines.length >= 5 && userLines[1].trim().equalsIgnoreCase(targetUser)) {
-                userSubjectCodes = userLines[3].trim(); // Subject codes are on the 4th line
-                userFound = true;
-                break;
-            }
-        }
-
-        if (!userFound) {
-            System.out.println("User not found: " + targetUser);
-            return;
-        }
-
-        // Step 4: Map subject codes to names and sort them
-        String[] subjectLines = subjectsData.split("\n");
-        String[] subjectCodes = userSubjectCodes.split(",");
-        String enrolledSubjects = ""; // To store formatted subject names
-
-        for (String code : subjectCodes) {
-            code = code.trim();
-            for (String subjectLine : subjectLines) {
-                if (subjectLine.startsWith(code + ",")) { // Find the matching subject
-                    String subjectName = subjectLine.split(",", 2)[1].trim();
-                    enrolledSubjects += code + ": " + subjectName + "\n";
+                if (line.equals(studentId)) { // Found the student ID
+                    userReader.readLine(); // Skip password
+                    String subjectLine = userReader.readLine(); // Get enrolled subject codes
+                    enrolledSubjectCodes = Arrays.asList(subjectLine.split(","));
                     break;
                 }
             }
-        }
+            userReader.close();
 
-        // Sort the subjects (basic sorting)
-        String[] subjectsArray = enrolledSubjects.split("\n");
-        for (int i = 0; i < subjectsArray.length - 1; i++) {
-            for (int j = i + 1; j < subjectsArray.length; j++) {
-                if (subjectsArray[i].compareTo(subjectsArray[j]) > 0) {
-                    String temp = subjectsArray[i];
-                    subjectsArray[i] = subjectsArray[j];
-                    subjectsArray[j] = temp;
+            // Map enrolled subjects to their names and sort them alphabetically by name
+            List<String> enrolledSubjects = new ArrayList<>();
+            for (String code : enrolledSubjectCodes) {
+                if (subjectMap.containsKey(code)) {
+                    enrolledSubjects.add(code + ": " + subjectMap.get(code));
                 }
             }
-        }
 
-        // Step 5: Display the sorted subjects
-        System.out.println("Enrolled Subjects for " + targetUser + ":");
-        System.out.println("-".repeat(30));
-        for (String subject : subjectsArray) {
-            if (!subject.isEmpty()) { // Avoid printing empty lines
+            // Bubble sort to sort by subject name
+            for (int i = 0; i < enrolledSubjects.size() - 1; i++) {
+                for (int j = 0; j < enrolledSubjects.size() - i - 1; j++) {
+                    String current = enrolledSubjects.get(j);
+                    String next = enrolledSubjects.get(j + 1);
+                    // Compare the subject names to determine the order
+                    if (current.split(": ")[1].compareTo(next.split(": ")[1]) > 0) {
+                        // Swap if the next element is smaller
+                        String temp = enrolledSubjects.get(j);
+                        enrolledSubjects.set(j, enrolledSubjects.get(j + 1));
+                        enrolledSubjects.set(j + 1, temp);
+                    }
+                }
+            }
+
+            // Display the result
+            System.out.println("Enrolled Subjects:");
+            System.out.println("------------------------");
+            for (String subject : enrolledSubjects) {
                 System.out.println(subject);
             }
+
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e.getMessage());
         }
+        
         while(true){
         System.out.print("\nPress 1 to return to main page: ");
         int option=sc.nextInt();
