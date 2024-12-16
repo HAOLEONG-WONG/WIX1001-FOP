@@ -231,6 +231,9 @@ class StudentRegistration {
             }
         }
 
+        Student student = new Student(id, password, name, email, courses, clubs);
+        LoginPage.getStudentDatabase().put(id, student);  // Save the student in the database
+        LoginPage.saveData();
         // Output the entered data
         System.out.println("\nStudent Registration Complete!");
         System.out.println("Name: " + name);
@@ -287,14 +290,7 @@ class ResetPassword {
                 String newPassword = scanner.nextLine();
                 LoginPage.updatePassword(student.getId(), newPassword); // 更新密码
                 LoginPage.saveData();  // 保存数据到文件
-                // 生成 PDF 并发送邮件
-                String studentInfo = String.format("Name: %s\nEmail: %s\nStudent ID: %s\nNew Password: %s",
-                        student.getName(), email, student.getId(), newPassword);
-                String pdfPath = PdfGenerator.generateStudentPdf(studentInfo);
-                EmailService.sendEmailWithAttachment(email, "Password Reset Confirmation",
-                        "Your new password details are attached as a PDF.", pdfPath);
-
-                System.out.println("Password reset successful. Please log in with your new password.");
+                System.out.println("Password reset successful.");
 
                 return;
             } else {
