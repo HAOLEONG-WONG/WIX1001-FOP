@@ -1,31 +1,43 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package Co_curriculumCalculationPage;
 
-/**
- *
- * @author HAOLEONGWONG
- */
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
+
 public class CocurriculumCalculator {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String matricnum) {
-        Scanner sc=new Scanner(System.in);
-        String matric_number=matricnum;
+    public static int CalculateMark (String Level, String Achievement){
+   
+      int LevelMark=0;
+      int AchievementMark=0;
+      
+      switch (Level) {
+            case "International" -> LevelMark=20;
+            case "National" -> LevelMark=15;
+            case "State" -> LevelMark=12;
+            case "School" -> LevelMark=10;
+            default -> LevelMark=0;  }
+        
+      switch (Achievement) {
+            case "Gold" -> AchievementMark=20;
+            case "Silver" -> AchievementMark=19;
+            case "Bronze" -> AchievementMark=18;
+            case "Participation" -> AchievementMark=0;
+            default -> AchievementMark=0;     }
+        
+      int TotalMark = LevelMark + AchievementMark;
+      return TotalMark; }
+    
+    public static void main(String matric_number, String society, String society_code, String uniform_body, String uniform_body_code, String sports_club, String sports_club_code) {
+       Scanner sc=new Scanner(System.in);
         
         // Define relative paths for the input files
         String fileClubSociety = "./ClubSocieties.txt";
         String fileStudentPositions = "./StudentPositions.txt";
-        String fileActivityLog = "./ActivitiesLog.txt";        
-        
+        String fileActivityLog = "./ActivitiesLog.txt";
+
         
         String position_society="";
         String position_uniform_body="";
@@ -57,21 +69,43 @@ public class CocurriculumCalculator {
             e.printStackTrace();
         }
         
-        String activity_society="";
-        String level_activity_society="";
-        String achievement_level_activity_society="";
-        String society="";
-        String society_code="";
-        String activity_uniform_body="";
-        String level_activity_uniform_body="";
-        String achievement_level_activity_uniform_body="";
-        String uniform_body="";
-        String uniform_body_code="";
-        String activity_sports_club="";
-        String level_activity_sports_club="";
-        String achievement_level_activity_sports_club="";
-        String sports_club="";
-        String sports_club_code="";
+        String activity_society = "";
+        String level_activity_society = "";
+        String achievement_level_activity_society = "";
+        
+        String activity_uniform_body = "";
+        String level_activity_uniform_body = "";
+        String achievement_level_activity_uniform_body = "";
+
+        String activity_sports_club = "";
+        String level_activity_sports_club = "";
+        String achievement_level_activity_sports_club = "";
+        
+        
+        int highest_P=-100;
+        int TotalMark_P=0;
+        
+
+        int highest_B=-100;
+        int TotalMark_B=0;
+        
+
+        int highest_S=-100;
+        int TotalMark_S=0;
+        
+        String activity_society1 = "";
+        String level_activity_society1 = "";
+        String achievement_level_activity_society1 = "";
+        
+        String activity_uniform_body1 = "";
+        String level_activity_uniform_body1 = "";
+        String achievement_level_activity_uniform_body1 = "";
+        
+        String activity_sports_club1 = "";
+        String level_activity_sports_club1 = "";
+        String achievement_level_activity_sports_club1 = "";
+        
+
         try (BufferedReader brActivityLog = new BufferedReader(new FileReader(fileActivityLog))) {
             String line;
             while ((line = brActivityLog.readLine()) != null) {
@@ -82,84 +116,84 @@ public class CocurriculumCalculator {
                 String studentId = parts[0];        // Student ID (e.g., s100201)
 
                 if(studentId.equals(matric_number)){
-                    String clubCode_check = parts[1];         // Club Code (e.g., P82)
+                    String clubCode_check = parts[1]; 
                     if(clubCode_check.charAt(0)=='P'){
-                        activity_society = parts[2];           // Activity Name (e.g., National Robotics Competition 2024)
-                        level_activity_society = parts[3];          // Activity Level (e.g., National)
-                        achievement_level_activity_society = parts[4];       // Achievement Level (e.g., Gold)
-
-                        // Now, find the club name by matching the club code with the ClubSocieties.txt file
-                        society = "";
-                        try (BufferedReader brClubSociety = new BufferedReader(new FileReader(fileClubSociety))) {
-                            String clubLine;
-                            while ((clubLine = brClubSociety.readLine()) != null) {
-                                // Split each line by comma
-                                String[] clubParts = clubLine.split(",");
-                                String clubCode = clubParts[0]; // Club Code
-                                if(clubCode_check.equals(clubCode)){
-                                    society = clubParts[1]; // Club Name
-                                    society_code=clubCode;
-                                    break; // Exit once we find the matching club
-                                }
-                            }
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                    }      }
+                        activity_society = parts[2]; 
+                        level_activity_society = parts[3];   
+                        achievement_level_activity_society = parts[4];
+                        TotalMark_P=CalculateMark(level_activity_society , achievement_level_activity_society);
+                        if(TotalMark_P > highest_P){
+                           highest_P=TotalMark_P;
+                           activity_society1 = activity_society;
+                           level_activity_society1 =  level_activity_society;
+                           achievement_level_activity_society1 = achievement_level_activity_society; } }
+                     
                     if(clubCode_check.charAt(0)=='B'){
-                        activity_uniform_body = parts[2];           // Activity Name (e.g., National Robotics Competition 2024)
-                        level_activity_uniform_body = parts[3];          // Activity Level (e.g., National)
-                        achievement_level_activity_uniform_body = parts[4];       // Achievement Level (e.g., Gold)
-
-                        // Now, find the club name by matching the club code with the ClubSocieties.txt file
-                        
-                        try (BufferedReader brClubSociety = new BufferedReader(new FileReader(fileClubSociety))) {
-                            String clubLine;
-                            while ((clubLine = brClubSociety.readLine()) != null) {
-                                // Split each line by comma
-                                String[] clubParts = clubLine.split(",");
-                                String clubCode = clubParts[0]; // Club Code
-                                if(clubCode_check.equals(clubCode)){
-                                    uniform_body = clubParts[1]; // Club Name
-                                    uniform_body_code=clubCode;
-                                    break; // Exit once we find the matching club
-                                }
-                            }
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                    }      }
+                        activity_uniform_body = parts[2];  
+                        level_activity_uniform_body = parts[3]; 
+                        achievement_level_activity_uniform_body = parts[4]; 
+                        TotalMark_B=CalculateMark(level_activity_uniform_body , achievement_level_activity_uniform_body);
+                        if(TotalMark_B > highest_B){
+                           highest_B=TotalMark_B;
+                           activity_uniform_body1 = activity_uniform_body;
+                           level_activity_uniform_body1 =  level_activity_uniform_body;
+                           achievement_level_activity_uniform_body1 = achievement_level_activity_uniform_body;} }
+                     
                     if(clubCode_check.charAt(0)=='S'){
-                        activity_sports_club = parts[2];           // Activity Name (e.g., National Robotics Competition 2024)
-                        level_activity_sports_club = parts[3];          // Activity Level (e.g., National)
-                        achievement_level_activity_sports_club = parts[4];       // Achievement Level (e.g., Gold)
+                        activity_sports_club  = parts[2];
+                        level_activity_sports_club = parts[3];  
+                        achievement_level_activity_sports_club = parts[4];  
+                        TotalMark_S=CalculateMark(level_activity_sports_club , achievement_level_activity_sports_club);
+                        if(TotalMark_S > highest_S){
+                           highest_S=TotalMark_S;
+                           activity_sports_club1 = activity_sports_club;
+                           level_activity_sports_club1 =  level_activity_sports_club;
+                           achievement_level_activity_sports_club1 = achievement_level_activity_sports_club; } }  
+                    
+                               
 
-                        // Now, find the club name by matching the club code with the ClubSocieties.txt file
-                        sports_club = "";
-                        try (BufferedReader brClubSociety = new BufferedReader(new FileReader(fileClubSociety))) {
-                            String clubLine;
-                            while ((clubLine = brClubSociety.readLine()) != null) {
-                                // Split each line by comma
-                                String[] clubParts = clubLine.split(",");
-                                String clubCode = clubParts[0]; // Club Code
-                                if(clubCode_check.equals(clubCode)){
-                                    sports_club = clubParts[1]; // Club Name
-                                    sports_club_code=clubCode;
-                                    break; // Exit once we find the matching club
-                                }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }      
-                    }                   
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("=".repeat(65));
-        System.out.println("\nCocurriculum Transcript for "+matric_number);
-        System.out.println("-".repeat(50));
+                }  }   } 
+                
+         catch (IOException e) {
+            e.printStackTrace();  }
+            
+            
+            
+          
+         if(activity_society1 == null || activity_society1.isEmpty()){
+            activity_society1="None";}
+         
+         if(level_activity_society1 == null||level_activity_society1.isEmpty()){
+            level_activity_society1="None";}  
+         
+         if(achievement_level_activity_society1 == null ||achievement_level_activity_society1.isEmpty()){
+            achievement_level_activity_society1="None";}
+         
+          
+         if(activity_uniform_body1== null||activity_uniform_body1.isEmpty()){
+            activity_uniform_body1="None";}
+         
+         if(level_activity_uniform_body1== null||level_activity_uniform_body1.isEmpty()){
+            level_activity_uniform_body1="None";}
+         
+         if(achievement_level_activity_uniform_body1== null||achievement_level_activity_uniform_body1.isEmpty()){
+            achievement_level_activity_uniform_body1="None";}
+         
+         
+         if(activity_sports_club1== null||activity_sports_club1.isEmpty()){
+            activity_sports_club1="None";} 
+         
+         if(level_activity_sports_club1== null||level_activity_sports_club1.isEmpty()){
+            level_activity_sports_club1="None";}  
+         
+         if(achievement_level_activity_sports_club1== null||achievement_level_activity_sports_club1.isEmpty()){
+            achievement_level_activity_sports_club1="None";}
+         
+         System.out.println("");
+
+        
+        System.out.println("Cocurriculum Transcript for "+matric_number);
+        System.out.println("============================================");
         
         System.out.println("["+society_code+" - "+society+"]");
         System.out.println("Attendance: assume full -----------> 50/50 marks");
@@ -177,7 +211,7 @@ public class CocurriculumCalculator {
          System.out.println("Selected Activity: "+activity_society);
          int level_activity_society_mark=0;
          
-        switch (level_activity_society) {
+        switch (level_activity_society1) {
             case "International" -> level_activity_society_mark=20;
             case "National" -> level_activity_society_mark=15;
             case "State" -> level_activity_society_mark=12;
@@ -185,20 +219,20 @@ public class CocurriculumCalculator {
             default -> level_activity_society_mark=0;
         }
          
-         System.out.println("Level of Activities: "+level_activity_society+" -----------> "+level_activity_society_mark+"/20 marks");
+         System.out.println("Level of Activities: "+level_activity_society1+" -----------> "+level_activity_society_mark+"/20 marks");
          int achievement_level_activity_society_mark=0;
-        switch (achievement_level_activity_society) {
+        switch (achievement_level_activity_society1) {
             case "Gold" -> achievement_level_activity_society_mark=20;
             case "Silver" -> achievement_level_activity_society_mark=19;
             case "Bronze" -> achievement_level_activity_society_mark=18;
             case "Participation" -> achievement_level_activity_society_mark=0;
             default -> achievement_level_activity_society_mark=0;
         }
-         System.out.println("Achievement Level: "+achievement_level_activity_society+" ----> "+achievement_level_activity_society_mark+"/20 marks");
-         System.out.println("-".repeat(65));
+         System.out.println("Achievement Level: "+achievement_level_activity_society1+" ----> "+achievement_level_activity_society_mark+"/20 marks");
+         System.out.println("===========================================================");
          int total_society=50+position_society_mark+level_activity_society_mark+achievement_level_activity_society_mark;
          System.out.println("Total: "+total_society+"/100 marks");
-         System.out.println("-".repeat(65));
+         System.out.println("===========================================================");
          
         System.out.println("["+uniform_body_code+" - "+uniform_body+"]");
         System.out.println("Attendance: assume full -----------> 50/50 marks");
@@ -216,7 +250,7 @@ public class CocurriculumCalculator {
          System.out.println("Selected Activity: "+activity_uniform_body);
          int level_activity_uniform_body_mark=0;
          
-        switch (level_activity_uniform_body) {
+        switch (level_activity_uniform_body1) {
             case "International" -> level_activity_uniform_body_mark=20;
             case "National" -> level_activity_uniform_body_mark=15;
             case "State" -> level_activity_uniform_body_mark=12;
@@ -224,20 +258,20 @@ public class CocurriculumCalculator {
             default -> level_activity_uniform_body_mark=0;
         }
          
-         System.out.println("Level of Activities: "+level_activity_uniform_body+" -----------> "+level_activity_uniform_body_mark+"/20 marks");
+         System.out.println("Level of Activities: "+level_activity_uniform_body1+" -----------> "+level_activity_uniform_body_mark+"/20 marks");
          int achievement_level_activity_uniform_body_mark=0;
-        switch (achievement_level_activity_uniform_body) {
+        switch (achievement_level_activity_uniform_body1) {
             case "Gold" -> achievement_level_activity_uniform_body_mark=20;
             case "Silver" -> achievement_level_activity_uniform_body_mark=19;
             case "Bronze" -> achievement_level_activity_uniform_body_mark=18;
             case "Participation" -> achievement_level_activity_uniform_body_mark=0;
             default -> achievement_level_activity_uniform_body_mark=0;
         }
-         System.out.println("Achievement Level: "+achievement_level_activity_uniform_body+" ----> "+achievement_level_activity_uniform_body_mark+"/20 marks");
-         System.out.println("-".repeat(65));
+         System.out.println("Achievement Level: "+achievement_level_activity_uniform_body1+" ----> "+achievement_level_activity_uniform_body_mark+"/20 marks");
+         System.out.println("===========================================================");
          int total_uniform_body=50+position_uniform_body_mark+level_activity_uniform_body_mark+achievement_level_activity_uniform_body_mark;
          System.out.println("Total: "+total_uniform_body+"/100 marks");
-         System.out.println("-".repeat(65));
+         System.out.println("===========================================================");
          
          
          System.out.println("["+sports_club_code+" - "+sports_club+"]");
@@ -256,7 +290,7 @@ public class CocurriculumCalculator {
          System.out.println("Selected Activity: "+activity_sports_club);
          int level_activity_sports_club_mark=0;
          
-        switch (level_activity_sports_club) {
+        switch (level_activity_sports_club1) {
             case "International" -> level_activity_sports_club_mark=20;
             case "National" -> level_activity_sports_club_mark=15;
             case "State" -> level_activity_sports_club_mark=12;
@@ -264,20 +298,20 @@ public class CocurriculumCalculator {
             default -> level_activity_sports_club_mark=0;
         }
          
-         System.out.println("Level of Activities: "+level_activity_sports_club+" -----------> "+level_activity_sports_club_mark+"/20 marks");
+         System.out.println("Level of Activities: "+level_activity_sports_club1+" -----------> "+level_activity_sports_club_mark+"/20 marks");
          int achievement_level_activity_sports_club_mark=0;
-        switch (achievement_level_activity_sports_club) {
+        switch (achievement_level_activity_sports_club1) {
             case "Gold" -> achievement_level_activity_sports_club_mark=20;
             case "Silver" -> achievement_level_activity_sports_club_mark=19;
             case "Bronze" -> achievement_level_activity_sports_club_mark=18;
             case "Participation" -> achievement_level_activity_sports_club_mark=0;
             default -> achievement_level_activity_sports_club_mark=0;
         }
-         System.out.println("Achievement Level: "+achievement_level_activity_sports_club+" ----> "+achievement_level_activity_sports_club_mark+"/20 marks");
-         System.out.println("-".repeat(65));
+         System.out.println("Achievement Level: "+achievement_level_activity_sports_club1+" ----> "+achievement_level_activity_sports_club_mark+"/20 marks");
+         System.out.println("===========================================================");
          int total_sports_club=50+position_sports_club_mark+level_activity_sports_club_mark+achievement_level_activity_sports_club_mark;
          System.out.println("Total: "+total_sports_club+"/100 marks");
-         System.out.println("-".repeat(65));
+         System.out.println("===========================================================");
          
          
          int max1=Math.max(total_society, Math.max(total_uniform_body,total_sports_club));
@@ -293,21 +327,9 @@ public class CocurriculumCalculator {
         
         double sum=(max1+max2)/2.0;
         
-        System.out.printf("\nFINAL MARKS: %.1f marks", sum);
-        System.out.println("\n"); 
-        System.out.print("-".repeat(65));
+        System.out.printf("FINAL MARKS: %.1f marks", sum);
+        System.out.println("");
         
-        while(true){
-        System.out.print("\nPress 1 to return to main page: ");
-        int option=sc.nextInt();
-        switch(option){
-            case 1:{
-                return;
-            }
-            default:{
-                System.out.print("Invalid option! Please try again.");
-            }  
-        }
-        }
     }
+    
 }
