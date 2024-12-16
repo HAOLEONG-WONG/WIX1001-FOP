@@ -2,138 +2,80 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package CodeMain;
+package CocurriculumPage;
 
 /**
  *
  * @author HAOLEONGWONG
  */
-import java.util.Scanner;
 import java.io.*;
-import UserAccount.*;
-import Loginpage.*;
-import AcademicPage.*;
-import CocurriculumPage.*;
-import Co_curriculumCalculationPage.*;
-import HandlingSelectionFromMultipleActivities.*;
-
-
-public class allMain {
+import java.util.Scanner;
+public class Main {
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        Scanner sc=new Scanner(System.in);
-        //Basic feature:
-       
-        //Loginpage 
-        MainPage loginP =new MainPage();
-        //AcademicPage
-        NewClass academicP = new NewClass();
-        //CocurriculumPage
-        Main cocuDisplay =new Main();
-        //Co_curriculumCalculatorPage
-        CocurriculumCalculator cocuCalculator = new CocurriculumCalculator();
+    public static int CocuDisplaymain(String matricnum) {
+        //Import class
+        Scanner sc=new Scanner (System.in);
+        ReadFilesintoArrays rfa= new ReadFilesintoArrays();
+        ParseClubData pcd=new ParseClubData();
+        MatchUserClubs muc=new MatchUserClubs();
+        CategorizeandDisplay cad=new CategorizeandDisplay();
         
-        //Extra features:
-        //Handling selection from multiple Activities
-        FileReadAndAppend multipleActivitesP =new FileReadAndAppend();
-        
-        //Start coding part
-        
-        //1st page LoginPage ---------------------------------------------------
-        String UserEmail =loginP.entrypoint();
-        
-        //Link loginPage to user class
-        String userEmail="";
-        String matricnum="";
-        String password="";
-        String academicCode="";
-        String cocurricularCode="";
-        
-        try{
-            Scanner in= new Scanner(new FileInputStream("UserData.txt"));
-            
-            while(in.hasNextLine()){
-                String line = in.nextLine().trim();
-                if(UserEmail.equals(line)){
-                    userEmail = line;
-                    line = in.nextLine().trim();
-                    matricnum= line;
-                    line = in.nextLine().trim();
-                    password=line;
-                    line = in.nextLine().trim();
-                    academicCode=line;
-                    line = in.nextLine().trim();
-                    cocurricularCode=line;
-                }
-            }
-            in.close();
-        }catch(FileNotFoundException e){
-            System.out.println("File was not found");
-        }
-        
-        //User account
-        user current_user= new user(userEmail,matricnum,password,academicCode,cocurricularCode);
-        //End LoginPage
+        //userLinesCount might need to change
+        int userLinesCount = 11;
+        int clubLinesCount = 10;
 
-        //3nd page(Mainpage)-------------------------------------------------------------------------
-        boolean page=true;
-        while(page){
-            System.out.println("=".repeat(65));
-            System.out.println("Welcome student "+ current_user.getMatricnum() +": ");
-            System.out.println("""
-                           ------------------------
-                           Press: 
-                           1. to Academic page
-                           2. to Cocurriculum page
-                           3. to add more club activity
-                           4. to end the programme""");
-            System.out.print("Your selection: ");
-            int choice=sc.nextInt();
-            System.out.println("=================================================================");
-            
-            switch (choice) {
-                case 1:
-                    // 4th page Academic page
-                    System.out.println("Student "+current_user.getMatricnum());
-                    academicP.main(current_user.getMatricnum());
-                    break;
-                case 2:
-                    //5th page Cocurriculum page
-                    int transcriptchoice = cocuDisplay.CocuDisplaymain(current_user.getMatricnum());
-                    String [][]clubcodeAndName = cocuDisplay.codeAndcodeName(current_user.getMatricnum());
-                    //Already create the variable
-                    String Sclubcode = clubcodeAndName[0][0];
-                    String Sclubname = clubcodeAndName[0][1];
-                    String Ubodycode = clubcodeAndName[1][0];
-                    String Ubodyname = clubcodeAndName[1][1];
-                    String Sportcode = clubcodeAndName[2][0];
-                    String Sportname = clubcodeAndName[2][1];
-                    
-                    //6th page display transcipt page
-                    if(transcriptchoice==1){
-                        cocuCalculator.main(current_user.getMatricnum());
-                    }
-                    break;
-                case 3:
-                    //7th page add extra activities page
-                    int addedtranscriptchoice=multipleActivitesP.main(current_user.getMatricnum());
-                    // Generate 6th page again, transcipt page
+        // Read files
+        String[] userData = rfa.readFile("UserData.txt", userLinesCount);
+        String[] clubData = rfa.readFile("ClubSocieties.txt", clubLinesCount);
 
-                    if(addedtranscriptchoice==1){
-                        cocuCalculator.main(current_user.getMatricnum());
-                    }
-                    break;
-                    //Total 7 page 
-                case 4:
-                    page=false;
-                    break;
-                default:
-                    System.out.println("Invalid option. Please enter again.");
-                    break;
-            }
+        // Parse club data
+        String[][] clubMapping = pcd.parseClubData(clubData);
+
+        // Get user clubs
+//        String matricNumber = "s100201"; // Replace with desired matric number
+        String[][] userClubs = muc.getUserClubs(matricnum, userData, clubMapping);
+
+        // Display user clubs
+        cad.displayUserClubs(userClubs);
+        System.out.println("Press 1 to Yes");
+        System.out.println("Press 2 to No and Go back to main page");
+        System.out.print("Your choice: ");
+        int choice=sc.nextInt();
+        while((choice != 1)&&(choice != 2) ){
+            System.out.print("\nInvalid option! Please try again.");
+            System.out.println("\nPress 1 to Yes");
+            System.out.println("Press 2 to No and Go back to main page");
+            System.out.print("Your choice: ");
+            choice=sc.nextInt();
+            
         }
+        return choice;
+    }
+    
+    //Mehtod to get the codeAndcodeName
+    public static String [][] codeAndcodeName(String matricnum){
+         //Import class
+        ReadFilesintoArrays rfa= new ReadFilesintoArrays();
+        ParseClubData pcd=new ParseClubData();
+        MatchUserClubs muc = new MatchUserClubs();
+        
+        //this one might change
+        //userData
+        int usernum =11;
+        String[] userData = rfa.readFile("UserData.txt", usernum);
+        
+        // afterparse
+        int clubnum =10;
+        String[] clubLines = rfa.readFile("ClubSocieties.txt", clubnum);
+        String [][] afterparse= pcd.parseClubData(clubLines);        
+        
+        //Call method getUserClubs
+        String[][]clubmatch = muc.getUserClubs(matricnum, userData, afterparse);
+        
+        return clubmatch;
     }
 }
+    
