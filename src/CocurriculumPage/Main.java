@@ -22,7 +22,8 @@ public class Main {
         ParseClubData pcd=new ParseClubData();
         MatchUserClubs muc=new MatchUserClubs();
         CategorizeandDisplay cad=new CategorizeandDisplay();
-
+        
+        //userLinesCount might need to change
         int userLinesCount = 11;
         int clubLinesCount = 10;
 
@@ -52,6 +53,29 @@ public class Main {
             
         }
         return choice;
+    }
+    
+    //Mehtod to get the codeAndcodeName
+    public static String [][] codeAndcodeName(String matricnum){
+         //Import class
+        ReadFilesintoArrays rfa= new ReadFilesintoArrays();
+        ParseClubData pcd=new ParseClubData();
+        MatchUserClubs muc = new MatchUserClubs();
+        
+        //this one might change
+        //userData
+        int usernum =11;
+        String[] userData = rfa.readFile("UserData.txt", usernum);
+        
+        // afterparse
+        int clubnum =10;
+        String[] clubLines = rfa.readFile("ClubSocieties.txt", clubnum);
+        String [][] afterparse= pcd.parseClubData(clubLines);        
+        
+        //Call method getUserClubs
+        String[][]clubmatch = muc.getUserClubs(matricnum, userData, afterparse);
+        
+        return clubmatch;
     }
 }
     

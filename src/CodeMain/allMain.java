@@ -27,7 +27,6 @@ public class allMain {
         Scanner sc=new Scanner(System.in);
         //Basic feature:
        
-        //UserAccount
         //Loginpage 
         MainPage loginP =new MainPage();
         //AcademicPage
@@ -75,10 +74,11 @@ public class allMain {
             System.out.println("File was not found");
         }
         
+        //User account
         user current_user= new user(userEmail,matricnum,password,academicCode,cocurricularCode);
         //End LoginPage
 
-        //2nd page(Selection)-------------------------------------------------------------------------
+        //3nd page(Mainpage)-------------------------------------------------------------------------
         boolean page=true;
         while(page){
             System.out.println("=".repeat(65));
@@ -96,21 +96,37 @@ public class allMain {
             
             switch (choice) {
                 case 1:
+                    // 4th page Academic page
                     System.out.println("Student "+current_user.getMatricnum());
                     academicP.main(current_user.getMatricnum());
                     break;
                 case 2:
+                    //5th page Cocurriculum page
                     int transcriptchoice = cocuDisplay.CocuDisplaymain(current_user.getMatricnum());
+                    String [][]clubcodeAndName = cocuDisplay.codeAndcodeName(current_user.getMatricnum());
+                    //Already create the variable
+                    String Sclubcode = clubcodeAndName[0][0];
+                    String Sclubname = clubcodeAndName[0][1];
+                    String Ubodycode = clubcodeAndName[1][0];
+                    String Ubodyname = clubcodeAndName[1][1];
+                    String Sportcode = clubcodeAndName[2][0];
+                    String Sportname = clubcodeAndName[2][1];
+                    
+                    //6th page display transcipt page
                     if(transcriptchoice==1){
                         cocuCalculator.main(current_user.getMatricnum());
                     }
                     break;
                 case 3:
+                    //7th page add extra activities page
                     int addedtranscriptchoice=multipleActivitesP.main(current_user.getMatricnum());
+                    // Generate 6th page again, transcipt page
+
                     if(addedtranscriptchoice==1){
                         cocuCalculator.main(current_user.getMatricnum());
                     }
                     break;
+                    //Total 7 page 
                 case 4:
                     page=false;
                     break;

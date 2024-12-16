@@ -26,7 +26,6 @@ public class CocurriculumCalculator {
         String fileStudentPositions = "./StudentPositions.txt";
         String fileActivityLog = "./ActivitiesLog.txt";        
         
-            
         
         String position_society="";
         String position_uniform_body="";
