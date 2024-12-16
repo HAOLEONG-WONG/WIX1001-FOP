@@ -208,7 +208,7 @@ public class CocurriculumCalculator {
         }
          System.out.println("Position: "+position_society+"-----------> "+position_society_mark+"/10 marks");
          System.out.println("");
-         System.out.println("Selected Activity: "+activity_society);
+         System.out.println("Selected Activity: "+activity_society1);
          int level_activity_society_mark=0;
          
         switch (level_activity_society1) {
@@ -247,7 +247,7 @@ public class CocurriculumCalculator {
         }
          System.out.println("Position: "+position_uniform_body+"-----------> "+position_uniform_body_mark+"/10 marks");
          System.out.println("");
-         System.out.println("Selected Activity: "+activity_uniform_body);
+         System.out.println("Selected Activity: "+activity_uniform_body1);
          int level_activity_uniform_body_mark=0;
          
         switch (level_activity_uniform_body1) {
