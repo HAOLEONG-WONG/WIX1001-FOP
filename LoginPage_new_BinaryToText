@@ -1,0 +1,48 @@
+package org.example;
+
+import java.io.*;
+import java.util.Map;
+
+public class BinaryToText {
+
+    public static void main(String[] args) {
+        // Use command-line arguments or configuration files to determine file paths
+        String binaryFilePath = "UserData.ser"; // This is the binary file storing student data (the file extension should be .ser)
+        String textFilePath = "studentDataConverted.txt"; // Output text file path
+
+        // Check if the binary file exists
+        File binaryFile = new File(binaryFilePath);
+        if (!binaryFile.exists()) {
+            System.out.println("Error: The binary file " + binaryFilePath + " does not exist.");
+            return;  // Terminate the program if the file doesn't exist
+        }
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(binaryFilePath))) {
+            // Deserialize the object
+            Map<String, Student> studentDatabase = (Map<String, Student>) ois.readObject();
+
+            // Create an output stream to write to the text file
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(textFilePath))) {
+                // Iterate through all students and write their information to the text file
+                for (Student student : studentDatabase.values()) {
+                    // Combine each student's information into the specified format
+                    String studentInfo = String.format("%s\n%s\n%s\n%s\n%s,%s\n",
+                            student.getEmail(), // Email
+                            student.getId(), // Student ID
+                            student.getPassword(), // Password
+                            student.getSocieties(), // Societies (assumed as comma-separated)
+                            student.getUniformBody(), // Uniform Body
+                            student.getSportsClub()); // Sports Club
+
+                    writer.write(studentInfo);
+                    writer.newLine(); // Add a blank line to separate each student
+                }
+            }
+
+            System.out.println("Binary file has been converted to text file successfully.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error during conversion: " + e.getMessage());
+            e.printStackTrace(); // Print detailed exception information to help with debugging
+        }
+    }
+}
